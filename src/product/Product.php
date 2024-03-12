@@ -1,6 +1,6 @@
 <?php
 namespace src\product;
-abstract class product
+abstract class Product
 {
     protected string $id;
     protected string $name;

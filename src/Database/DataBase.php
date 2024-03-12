@@ -1,8 +1,8 @@
 <?php
-
-class database
+namespace src\Database;
+class DataBase
 {
-    private $pdo;
+    private \PDO $pdo;
 
     public function __construct($dsn,$username,$password)
     {
@@ -10,7 +10,7 @@ class database
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
-    public function getPdo() : PDO
+    public function getPdo() : \PDO
     {
         return $this->pdo;
     }
