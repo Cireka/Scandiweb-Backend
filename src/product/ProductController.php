@@ -1,49 +1,68 @@
 <?php
+
 namespace src\product;
+
+
+
+
 
 
 class ProductController
 {
-    private  $database;
 
-    function __construct( $database)
+    protected \src\Database\DataBase $connection;
+
+    function __construct($db)
     {
-        $this->database = $database;
+        $this->connection = $db;
 
     }
 
     public function handleGet($uri)
     {
-      $path = explode('/',$uri);
-      echo $path[1];
-
-      if($path[1] === "products"){
-          $this->getProducts();
-      }
+        $path = explode('/', $uri);
+        if ($path[1] === "products") {
+            $this->getProducts();
+        }
     }
+
     public function handlePost($uri)
     {
-        echo $uri;
+        $data = json_decode(file_get_contents('php://input'), true);
+        $type = $data['type'];
+        if ($uri === "/postProduct"){
+            $this->createProduct($type,$data);
+        }
+
+
     }
+
+    private function createProduct($type, $data)
+    {
+        $className = __NAMESPACE__ . '\\' . ucfirst($type);
+
+        $item = new $className($data);
+        $item->saveProduct($this->connection);
+
+    }
+
     public function handleDelete($uri)
     {
+
 
     }
 
 
     private function getProducts()
     {
-       $stmt = $this->database->getPdo()->prepare("SELECT * FROM products");
-       $stmt->execute();
-       $products = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt = $this->database->getPdo()->prepare("SELECT * FROM products");
+        $stmt->execute();
+        $products = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 
-        header('Content-Type: application/json');
         echo json_encode($products);
 
     }
-    private function createProduct($data)
-    {
 
-    }
+
 }

@@ -23,9 +23,10 @@ $productController = new src\product\productController($db);
 switch ($method){
     case "GET":
     $productController->handleGet($uri);
+
         break;
     case "POST":
-        // product controller for get POST
+        $productController->handlePost($uri);
         break;
     case "DELETE":
         // product controller for DEl reqs
