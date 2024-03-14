@@ -28,9 +28,24 @@ class Book extends Product
         $stmt->bindValue(':SKU', parent::getSku());
         $stmt->bindValue(':weight', $this->weight);
         $stmt->bindValue(':product_type', self::TYPE);
-        $stmt->execute();
+        if ($stmt->execute()) {
+            $this->jsonSerialize();
+        } else {
+            http_response_code(500);
+            echo 'Method Not Allowed';
+        }
+    }
 
-
+    protected function jsonSerialize(): void
+    {
+        echo json_encode([
+            'message' => 'Data saved successfully.',
+            'name' => parent::getName(),
+            'price' => parent::getPrice(),
+            'SKU' => parent::getSku(),
+            'weight' => $this->weight,
+            'product_type' => self::TYPE
+        ]);
     }
 
     public function getWeight(): float

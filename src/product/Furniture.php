@@ -59,7 +59,25 @@ class Furniture extends Product
         $stmt->bindValue(':width', $this->width_cm);
         $stmt->bindValue(':length', $this->length_cm);
         $stmt->bindValue(':product_type', self::TYPE);
-        $stmt->execute();
+        if ($stmt->execute()) {
+            $this->jsonSerialize();
+        } else {
+            http_response_code(500);
+            echo 'Method Not Allowed';
+        }
 
+    }
+    protected function jsonSerialize() : void
+    {
+        echo json_encode([
+            'message' => 'Data saved successfully.',
+            'name' => parent::getName(),
+            'price' => parent::getPrice(),
+            'SKU' => parent::getSku(),
+            'width' => $this->width_cm,
+            'height' => $this->height_cm,
+            'length' => $this->length_cm,
+            'product_type' => self::TYPE
+        ]);
     }
 }

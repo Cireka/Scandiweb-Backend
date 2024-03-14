@@ -7,11 +7,6 @@ abstract class Product
     protected float $price;
     protected int $sku;
 
-    public function getSku(): int
-    {
-        return $this->sku;
-    }
-
     public function getName(): string
     {
         return $this->name;
@@ -22,6 +17,11 @@ abstract class Product
         return $this->price;
     }
 
+    public function getSku(): int
+    {
+        return $this->sku;
+    }
+
     protected function __construct($data)
     {
         $this->name = $data['name'];
@@ -30,7 +30,7 @@ abstract class Product
     }
 
     protected abstract function saveProduct(\src\Database\DataBase $db);
-
+    protected abstract function jsonSerialize();
 
 
 }

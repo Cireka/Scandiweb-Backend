@@ -1,14 +1,9 @@
 <?php
-
-
-
 require "src/Database/DataBase.php";
 require "src/Utils/ErrorHandler.php";
 require_once "src/Utils/autoLoader.php";
 
-
 spl_autoload_register('autoload');
-
 header("Content-type: application/json; charset=UTF-8");
 set_exception_handler("ErrorHandler::handleException");
 
@@ -23,7 +18,6 @@ $productController = new src\product\productController($db);
 switch ($method){
     case "GET":
     $productController->handleGet($uri);
-
         break;
     case "POST":
         $productController->handlePost($uri);

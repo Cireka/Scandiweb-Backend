@@ -24,7 +24,7 @@ class Dvd extends Product
         $this->size_mb = $size;
     }
 
-    public function saveProduct( \src\Database\DataBase $db): void
+    public function saveProduct(\src\Database\DataBase $db): void
     {
         $sql = 'INSERT INTO products (name, SKU, price, product_type, size_mb) VALUES (:name, :SKU,:price, :product_type, :size_mb )';
         $stmt = $db->getPdo()->prepare($sql);
@@ -33,7 +33,23 @@ class Dvd extends Product
         $stmt->bindValue(':SKU', parent::getSku());
         $stmt->bindValue(':size_mb', $this->size_mb);
         $stmt->bindValue(':product_type', self::TYPE);
-        $stmt->execute();
+        if ($stmt->execute()) {
+            $this->jsonSerialize();
+        } else {
+            http_response_code(500);
+            echo 'Method Not Allowed';
+        }
+    }
 
+    protected function jsonSerialize() : void
+    {
+        echo json_encode([
+            'message' => 'Data saved successfully.',
+            'name' => parent::getName(),
+            'price' => parent::getPrice(),
+            'SKU' => parent::getSku(),
+            'size' => $this->size_mb,
+            'product_type' => self::TYPE
+        ]);
     }
 }
