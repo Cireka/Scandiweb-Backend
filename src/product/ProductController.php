@@ -36,6 +36,31 @@ class ProductController
 
 
     }
+    public function handleDelete($uri)
+    {
+        $path = explode('/', $uri);
+
+        if($path[1] === "deleteProducts" && $path[2] === null){
+            $this->massDelete();
+        } else if(is_numeric($path[2])){
+            $id = $path[2] ;
+            $this->deleteById($id);
+        }
+
+
+    }
+
+    private function deleteById($id)
+    {
+
+        $stmt = $this->connection->getPdo()->prepare("DELETE FROM products WHERE SKU = $id;");
+        $stmt->execute();
+    }
+    private function massDelete()
+    {
+        $stmt = $this->connection->getPdo()->prepare("DELETE FROM products");
+        $stmt->execute();
+    }
 
     private function createProduct($type, $data)
     {
@@ -45,20 +70,11 @@ class ProductController
         $item->saveProduct($this->connection);
 
     }
-
-    public function handleDelete($uri)
-    {
-
-
-    }
-
-
     private function getProducts()
     {
-        $stmt = $this->database->getPdo()->prepare("SELECT * FROM products");
+        $stmt = $this->connection->getPdo()->prepare("SELECT * FROM products");
         $stmt->execute();
         $products = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
 
         echo json_encode($products);
 

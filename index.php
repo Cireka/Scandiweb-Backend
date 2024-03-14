@@ -29,7 +29,7 @@ switch ($method){
         $productController->handlePost($uri);
         break;
     case "DELETE":
-        // product controller for DEl reqs
+       $productController->handleDelete($uri);
         break;
     default:
         http_response_code(405);

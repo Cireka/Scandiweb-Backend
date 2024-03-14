@@ -1,8 +1,9 @@
 <?php
+
 namespace src\product;
- class Book extends Product
+class Book extends Product
 {
-  private const string TYPE = "book";
+    private const string TYPE = "book";
     private float $weight;
 
     public function __construct($data)
@@ -17,7 +18,7 @@ namespace src\product;
     }
 
     // Public ??????
-    public function saveProduct($db)
+    public function saveProduct(\src\Database\DataBase $db): void
     {
 
         $sql = 'INSERT INTO products (name, SKU, price, product_type, weight) VALUES (:name, :SKU,:price, :product_type, :weight )';
@@ -28,9 +29,12 @@ namespace src\product;
         $stmt->bindValue(':weight', $this->weight);
         $stmt->bindValue(':product_type', self::TYPE);
         $stmt->execute();
+
+
     }
-     protected  function jsonSerialize(){
-         echo 'wew';
-         return true;
-     }
+
+    public function getWeight(): float
+    {
+        return $this->weight;
+    }
 }

@@ -5,9 +5,9 @@ abstract class Product
 {
     protected string $name;
     protected float $price;
-    protected string $sku;
+    protected int $sku;
 
-    public function getSku(): string
+    public function getSku(): int
     {
         return $this->sku;
     }
@@ -31,6 +31,6 @@ abstract class Product
 
     protected abstract function saveProduct(\src\Database\DataBase $db);
 
-    protected abstract function jsonSerialize();
+
 
 }
