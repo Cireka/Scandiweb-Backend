@@ -31,8 +31,8 @@ class Book extends Product
         if ($stmt->execute()) {
             $this->jsonSerialize();
         } else {
-            http_response_code(500);
-            echo 'Method Not Allowed';
+            http_response_code(400);
+            echo 'Unsuccessful post request.';
         }
     }
 
