@@ -2,6 +2,7 @@
 require "src/Database/DataBase.php";
 require "src/Utils/ErrorHandler.php";
 require_once "src/Utils/autoLoader.php";
+require_once "src/Utils/cors.php";
 
 spl_autoload_register('autoload');
 header("Content-type: application/json; charset=UTF-8");
