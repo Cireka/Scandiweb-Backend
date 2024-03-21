@@ -21,7 +21,7 @@ class Book extends Product
     public function saveProduct(\src\Database\DataBase $db): void
     {
 
-        $sql = 'INSERT INTO products (name, SKU, price, product_type, weight) VALUES (:name, :SKU,:price, :product_type, :weight )';
+        $sql = 'INSERT INTO books (name, SKU, price, product_type, weight) VALUES (:name, :SKU,:price, :product_type, :weight )';
         $stmt = $db->getPdo()->prepare($sql);
         $stmt->bindValue(':name', parent::getName());
         $stmt->bindValue(':price', parent::getPrice());

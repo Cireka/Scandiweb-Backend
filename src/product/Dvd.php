@@ -26,7 +26,7 @@ class Dvd extends Product
 
     public function saveProduct(\src\Database\DataBase $db): void
     {
-        $sql = 'INSERT INTO products (name, SKU, price, product_type, size_mb) VALUES (:name, :SKU,:price, :product_type, :size_mb )';
+        $sql = 'INSERT INTO dvds (name, SKU, price, product_type, size_mb) VALUES (:name, :SKU,:price, :product_type, :size_mb )';
         $stmt = $db->getPdo()->prepare($sql);
         $stmt->bindValue(':name', parent::getName());
         $stmt->bindValue(':price', parent::getPrice());

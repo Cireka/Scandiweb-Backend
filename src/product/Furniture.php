@@ -28,9 +28,9 @@ class Furniture extends Product
     public function __construct($data)
     {
         parent::__construct($data);
-        $this->setWidth($data["width"]);
-        $this->setLength($data["length"]);
-        $this->setHeight($data["height"]);
+        $this->setWidth($data["width_cm"]);
+        $this->setLength($data["length_cm"]);
+        $this->setHeight($data["height_cm"]);
     }
 
     public function setWidth(float $size): void
@@ -50,7 +50,7 @@ class Furniture extends Product
 
     public function saveProduct( \src\Database\DataBase $db): void
     {
-        $sql = 'INSERT INTO products (name, SKU, price, product_type, height, width,length) VALUES (:name, :SKU,:price, :product_type, :height,:width,:length )';
+        $sql = 'INSERT INTO furniture (name, SKU, price, product_type, height_cm, width_cm,length_cm) VALUES (:name, :SKU,:price, :product_type, :height,:width,:length )';
         $stmt = $db->getPdo()->prepare($sql);
         $stmt->bindValue(':name', parent::getName());
         $stmt->bindValue(':price', parent::getPrice());
