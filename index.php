@@ -18,7 +18,6 @@ $productController = new src\product\productController($db);
 
 switch ($method) {
     case "GET":
-
         $productController->handleGet($uri);
         break;
     case "POST":
@@ -26,6 +25,9 @@ switch ($method) {
         break;
     case "DELETE":
         $productController->handleDelete($uri);
+        break;
+    case "PATCH":
+        $productController->handlePath($uri);
         break;
     default:
         http_response_code(405);

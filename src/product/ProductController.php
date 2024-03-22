@@ -14,7 +14,7 @@ class ProductController
 
     }
 
-    public function handleGet($uri)
+    public function handleGet($uri):void
     {
         $path = explode('/', $uri);
         if ($path[1] === "products") {
@@ -22,7 +22,7 @@ class ProductController
         }
     }
 
-    public function handlePost($uri)
+    public function handlePost($uri):void
     {
         $data = json_decode(file_get_contents('php://input'), true);
         $type = $data['type'];
@@ -33,27 +33,21 @@ class ProductController
 
     }
 
-    public function handleDelete($uri)
+    public function handleDelete($uri):void
+    {
+            $this->massDelete();
+    }
+    public function handlePath($uri):void
     {
         $data = json_decode(file_get_contents('php://input'), true);
-        $path = explode('/', $uri);
-
-        if ($path[1] === "deleteProducts") {
-            $this->massDelete();
-        } else if ($path[1] === "deleteProductsById") {
-            $this->deleteById($data);
-        }
-
-
+        $this->deleteById($data);
     }
 
-    private function deleteById($data)
+    private function deleteById($data):void
     {
+        var_dump($data);
         $types = $data["type"];
         $SKUs = $data["SKU"];
-
-        // Prepare the SQL statement outside the loop for efficiency
-        $stmt = $this->connection->getPdo()->prepare("DELETE FROM :type WHERE SKU = :SKU");
 
         // Iterate over each type and SKU pair to execute the delete query
         foreach ($types as $index => $type) {
