@@ -20,6 +20,11 @@ class Book extends Product
     // Public ??????
     public function saveProduct(\src\Database\DataBase $db): void
     {
+        if(!parent::checkSkuValidity($db)){
+            http_response_code(400);
+            echo 'SKU already exists in the database.';
+            return;
+        }
 
         $sql = 'INSERT INTO books (name, SKU, price, product_type, weight) VALUES (:name, :SKU,:price, :product_type, :weight )';
         $stmt = $db->getPdo()->prepare($sql);

@@ -39,13 +39,15 @@ class ProductController
     }
     public function handlePath($uri):void
     {
-        $data = json_decode(file_get_contents('php://input'), true);
-        $this->deleteById($data);
+        if ($uri === "/deleteProductsById") {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $this->deleteById($data);
+        }
+
     }
 
     private function deleteById($data):void
     {
-        var_dump($data);
         $types = $data["type"];
         $SKUs = $data["SKU"];
 

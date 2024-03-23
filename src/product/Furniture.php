@@ -48,8 +48,15 @@ class Furniture extends Product
         $this->height_cm = $size;
     }
 
-    public function saveProduct( \src\Database\DataBase $db): void
+    public function saveProduct(\src\Database\DataBase $db): void
     {
+        if(!parent::checkSkuValidity($db)){
+            http_response_code(400);
+            echo 'SKU already exists in the database.';
+            return;
+        }
+
+
         $sql = 'INSERT INTO furniture (name, SKU, price, product_type, height_cm, width_cm,length_cm) VALUES (:name, :SKU,:price, :product_type, :height,:width,:length )';
         $stmt = $db->getPdo()->prepare($sql);
         $stmt->bindValue(':name', parent::getName());
@@ -67,7 +74,8 @@ class Furniture extends Product
         }
 
     }
-    protected function jsonSerialize() : void
+
+    protected function jsonSerialize(): void
     {
         echo json_encode([
             'message' => 'Data saved successfully.',

@@ -26,6 +26,11 @@ class Dvd extends Product
 
     public function saveProduct(\src\Database\DataBase $db): void
     {
+        if(!parent::checkSkuValidity($db)){
+            http_response_code(400);
+            echo 'SKU already exists in the database.';
+            return;
+        }
         $sql = 'INSERT INTO dvds (name, SKU, price, product_type, size_mb) VALUES (:name, :SKU,:price, :product_type, :size_mb )';
         $stmt = $db->getPdo()->prepare($sql);
         $stmt->bindValue(':name', parent::getName());

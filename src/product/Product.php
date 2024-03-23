@@ -29,6 +29,22 @@ abstract class Product
         $this->sku = $data['sku'];
     }
 
+    protected function checkSkuValidity($db):bool{
+
+        $sku = $this->getSku();
+        $tables = ['books', 'furniture', 'dvds'];
+
+        foreach ($tables as $table) {
+            $stmt = $db->getPdo()->prepare("SELECT COUNT(*) FROM $table WHERE SKU = :sku");
+            $stmt->execute([':sku' => $sku]);
+            if ($stmt->fetchColumn() > 0) {
+                return false; // SKU already exists in the database
+            }
+        }
+
+        return true; // SKU is valid
+    }
+
     protected abstract function saveProduct(\src\Database\DataBase $db);
     protected abstract function jsonSerialize();
 
