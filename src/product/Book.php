@@ -17,7 +17,7 @@ class Book extends Product
         $this->weight = $weight;
     }
 
-    // Public ??????
+
     public function saveProduct(\src\Database\DataBase $db): void
     {
         if(!parent::checkSkuValidity($db)){
@@ -25,25 +25,31 @@ class Book extends Product
             echo 'SKU already exists in the database.';
             return;
         }
+        try{
 
-        $sql = 'INSERT INTO books (name, SKU, price, product_type, weight) VALUES (:name, :SKU,:price, :product_type, :weight )';
-        $stmt = $db->getPdo()->prepare($sql);
-        $stmt->bindValue(':name', parent::getName());
-        $stmt->bindValue(':price', parent::getPrice());
-        $stmt->bindValue(':SKU', parent::getSku());
-        $stmt->bindValue(':weight', $this->weight);
-        $stmt->bindValue(':product_type', self::TYPE);
-        if ($stmt->execute()) {
-            $this->jsonSerialize();
-        } else {
+            $sql = 'INSERT INTO books (name, SKU, price, product_type, weight) VALUES (:name, :SKU,:price, :product_type, :weight )';
+            $stmt = $db->getPdo()->prepare($sql);
+            $stmt->bindValue(':name', parent::getName());
+            $stmt->bindValue(':price', parent::getPrice());
+            $stmt->bindValue(':SKU', parent::getSku());
+            $stmt->bindValue(':weight', $this->weight);
+            $stmt->bindValue(':product_type', self::TYPE);
+            if ($stmt->execute()) {
+                $this->jsonSerialize();
+            } else {
+                http_response_code(400);
+                echo 'Unsuccessful post request.';
+            }
+        }catch (\Exception $e){
             http_response_code(400);
-            echo 'Unsuccessful post request.';
+            echo $e->getMessage();
         }
+
     }
 
-    protected function jsonSerialize(): void
+    protected function jsonSerialize(): string
     {
-        echo json_encode([
+        return json_encode([
             'message' => 'Data saved successfully.',
             'name' => parent::getName(),
             'price' => parent::getPrice(),

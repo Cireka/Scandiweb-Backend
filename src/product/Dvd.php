@@ -31,24 +31,30 @@ class Dvd extends Product
             echo 'SKU already exists in the database.';
             return;
         }
-        $sql = 'INSERT INTO dvds (name, SKU, price, product_type, size_mb) VALUES (:name, :SKU,:price, :product_type, :size_mb )';
-        $stmt = $db->getPdo()->prepare($sql);
-        $stmt->bindValue(':name', parent::getName());
-        $stmt->bindValue(':price', parent::getPrice());
-        $stmt->bindValue(':SKU', parent::getSku());
-        $stmt->bindValue(':size_mb', $this->size_mb);
-        $stmt->bindValue(':product_type', self::TYPE);
-        if ($stmt->execute()) {
-            $this->jsonSerialize();
-        } else {
+        try{
+            $sql = 'INSERT INTO dvds (name, SKU, price, product_type, size_mb) VALUES (:name, :SKU,:price, :product_type, :size_mb )';
+            $stmt = $db->getPdo()->prepare($sql);
+            $stmt->bindValue(':name', parent::getName());
+            $stmt->bindValue(':price', parent::getPrice());
+            $stmt->bindValue(':SKU', parent::getSku());
+            $stmt->bindValue(':size_mb', $this->size_mb);
+            $stmt->bindValue(':product_type', self::TYPE);
+            if ($stmt->execute()) {
+                $this->jsonSerialize();
+            } else {
+                http_response_code(400);
+                echo 'Unsuccessful post request.';
+            }
+        }catch (\Exception $e){
             http_response_code(400);
-            echo 'Unsuccessful post request.';
+            echo $e->getMessage();
         }
+
     }
 
-    protected function jsonSerialize() : void
+    protected function jsonSerialize(): string
     {
-        echo json_encode([
+        return json_encode([
             'message' => 'Data saved successfully.',
             'name' => parent::getName(),
             'price' => parent::getPrice(),

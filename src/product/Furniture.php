@@ -50,34 +50,38 @@ class Furniture extends Product
 
     public function saveProduct(\src\Database\DataBase $db): void
     {
-        if(!parent::checkSkuValidity($db)){
+        if (!parent::checkSkuValidity($db)) {
             http_response_code(400);
             echo 'SKU already exists in the database.';
             return;
         }
-
-
-        $sql = 'INSERT INTO furniture (name, SKU, price, product_type, height_cm, width_cm,length_cm) VALUES (:name, :SKU,:price, :product_type, :height,:width,:length )';
-        $stmt = $db->getPdo()->prepare($sql);
-        $stmt->bindValue(':name', parent::getName());
-        $stmt->bindValue(':price', parent::getPrice());
-        $stmt->bindValue(':SKU', parent::getSku());
-        $stmt->bindValue(':height', $this->height_cm);
-        $stmt->bindValue(':width', $this->width_cm);
-        $stmt->bindValue(':length', $this->length_cm);
-        $stmt->bindValue(':product_type', self::TYPE);
-        if ($stmt->execute()) {
-            $this->jsonSerialize();
-        } else {
+        try {
+            $sql = 'INSERT INTO furniture (name, SKU, price, product_type, height_cm, width_cm,length_cm) VALUES (:name, :SKU,:price, :product_type, :height,:width,:length )';
+            $stmt = $db->getPdo()->prepare($sql);
+            $stmt->bindValue(':name', parent::getName());
+            $stmt->bindValue(':price', parent::getPrice());
+            $stmt->bindValue(':SKU', parent::getSku());
+            $stmt->bindValue(':height', $this->height_cm);
+            $stmt->bindValue(':width', $this->width_cm);
+            $stmt->bindValue(':length', $this->length_cm);
+            $stmt->bindValue(':product_type', self::TYPE);
+            if ($stmt->execute()) {
+                $this->jsonSerialize();
+            } else {
+                http_response_code(400);
+                echo 'Unsuccessful post request.';
+            }
+        } catch (\Exception $e) {
             http_response_code(400);
-            echo 'Unsuccessful post request.';
+            echo $e->getMessage();
         }
+
 
     }
 
-    protected function jsonSerialize(): void
+    protected function jsonSerialize(): string
     {
-        echo json_encode([
+        return json_encode([
             'message' => 'Data saved successfully.',
             'name' => parent::getName(),
             'price' => parent::getPrice(),
