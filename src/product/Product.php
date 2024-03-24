@@ -5,7 +5,7 @@ abstract class Product
 {
     protected string $name;
     protected float $price;
-    protected int $sku;
+    protected string $sku;
 
     public function getName(): string
     {
@@ -17,7 +17,7 @@ abstract class Product
         return $this->price;
     }
 
-    public function getSku(): int
+    public function getSku(): string
     {
         return $this->sku;
     }

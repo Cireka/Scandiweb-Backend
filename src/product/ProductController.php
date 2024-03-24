@@ -35,7 +35,10 @@ class ProductController
 
     public function handleDelete($uri):void
     {
+        if ($uri === "/deleteProducts") {
             $this->massDelete();
+        }
+
     }
     public function handlePath($uri):void
     {
@@ -92,17 +95,17 @@ class ProductController
     private function getProducts()
     {
         // Fetch books
-        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price, 'book' AS product_type, weight FROM books");
+        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price, product_type, weight, attribute, unit FROM books");
         $stmt->execute();
         $books = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 // Fetch furniture
-        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price, 'furniture' AS product_type, width_cm, height_cm, length_cm FROM furniture");
+        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price,  product_type, width_cm, height_cm, length_cm FROM furniture");
         $stmt->execute();
         $furniture = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 // Fetch DVDs
-        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price, 'dvd' AS product_type, size_mb FROM dvds");
+        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price,  product_type, size_mb, attribute, unit  FROM dvds");
         $stmt->execute();
         $dvds = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
