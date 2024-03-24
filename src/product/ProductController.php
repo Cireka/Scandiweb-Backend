@@ -100,7 +100,7 @@ class ProductController
         $books = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 // Fetch furniture
-        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price,  product_type, width_cm, height_cm, length_cm FROM furniture");
+        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price,  product_type, unit, Dimensions FROM furniture");
         $stmt->execute();
         $furniture = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
