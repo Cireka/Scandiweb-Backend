@@ -32,13 +32,12 @@ class Dvd extends Product
             return;
         }
         try{
-            $sql = 'INSERT INTO dvds (name, SKU, price, product_type, size_mb) VALUES (:name, :SKU,:price, :product_type, :size_mb )';
+            $sql = 'INSERT INTO dvds (name, SKU, price, attribute_value) VALUES (:name, :SKU,:price, :attribute_value)';
             $stmt = $db->getPdo()->prepare($sql);
             $stmt->bindValue(':name', parent::getName());
             $stmt->bindValue(':price', parent::getPrice());
             $stmt->bindValue(':SKU', parent::getSku());
-            $stmt->bindValue(':size_mb', $this->size_mb);
-            $stmt->bindValue(':product_type', self::TYPE);
+            $stmt->bindValue(':attribute_value', $this->getSizeMb());
             if ($stmt->execute()) {
                 $this->jsonSerialize();
             } else {

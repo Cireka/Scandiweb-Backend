@@ -27,7 +27,7 @@ switch ($method) {
         $productController->handleDelete($uri);
         break;
     case "PATCH":
-        $productController->handlePath($uri);
+        $productController->handlePatch($uri);
         break;
     default:
         http_response_code(405);

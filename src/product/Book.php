@@ -27,13 +27,12 @@ class Book extends Product
         }
         try{
 
-            $sql = 'INSERT INTO books (name, SKU, price, product_type, weight) VALUES (:name, :SKU,:price, :product_type, :weight )';
+            $sql = 'INSERT INTO books (name, SKU, price, attribute_value) VALUES (:name, :SKU,:price, :weight)';
             $stmt = $db->getPdo()->prepare($sql);
             $stmt->bindValue(':name', parent::getName());
             $stmt->bindValue(':price', parent::getPrice());
             $stmt->bindValue(':SKU', parent::getSku());
-            $stmt->bindValue(':weight', $this->weight);
-            $stmt->bindValue(':product_type', self::TYPE);
+            $stmt->bindValue(':weight', $this->getWeight());
             if ($stmt->execute()) {
                 $this->jsonSerialize();
             } else {

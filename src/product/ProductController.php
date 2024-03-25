@@ -40,7 +40,7 @@ class ProductController
         }
 
     }
-    public function handlePath($uri):void
+    public function handlePatch($uri):void
     {
         if ($uri === "/deleteProductsById") {
             $data = json_decode(file_get_contents('php://input'), true);
@@ -95,17 +95,17 @@ class ProductController
     private function getProducts()
     {
         // Fetch books
-        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price, product_type, weight, attribute, unit FROM books");
+        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price, product_type, attribute, unit, attribute_value  FROM books");
         $stmt->execute();
         $books = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 // Fetch furniture
-        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price,  product_type, unit, Dimensions FROM furniture");
+        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price,  product_type, unit, attribute, attribute_value  FROM furniture");
         $stmt->execute();
         $furniture = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
 // Fetch DVDs
-        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price,  product_type, size_mb, attribute, unit  FROM dvds");
+        $stmt = $this->connection->getPdo()->prepare("SELECT SKU, name, price,  product_type, attribute, unit, attribute_value  FROM dvds");
         $stmt->execute();
         $dvds = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 

@@ -12,9 +12,9 @@ class Furniture extends Product
         return $this->Dimensions;
     }
 
-    public function setDimensions(string $Dimensions): void
+    public function setDimensions(string $data): void
     {
-        $this->Dimensions = $Dimensions;
+        $this->Dimensions = $data;
     }
 
     public function __construct($data)
@@ -32,13 +32,12 @@ class Furniture extends Product
             return;
         }
         try {
-            $sql = 'INSERT INTO furniture (name, SKU, price, product_type, Dimensions) VALUES (:name, :SKU,:price, :product_type, :Dimensions)';
+            $sql = 'INSERT INTO furniture (name, SKU, price, attribute_value) VALUES (:name, :SKU,:price, :attribute_value)';
             $stmt = $db->getPdo()->prepare($sql);
             $stmt->bindValue(':name', parent::getName());
             $stmt->bindValue(':price', parent::getPrice());
             $stmt->bindValue(':SKU', parent::getSku());
-            $stmt->bindValue(':Dimensions', $this->getDimensions());
-            $stmt->bindValue(':product_type', self::TYPE);
+            $stmt->bindValue(':attribute_value', $this->getDimensions());
             if ($stmt->execute()) {
                 $this->jsonSerialize();
             } else {
