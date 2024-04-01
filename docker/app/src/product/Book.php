@@ -1,54 +1,49 @@
 <?php
 
-namespace src\product;
+namespace docker\app\src\product;
 
-class Furniture extends Product
+class Book extends Product
 {
-    private const string TYPE = "Furniture";
-    private string $Dimensions;
-
-    public function getDimensions(): string
-    {
-        return $this->Dimensions;
-    }
-
-    public function setDimensions(string $data): void
-    {
-        $this->Dimensions = $data;
-    }
+    private const string TYPE = "book";
+    private float $weight;
 
     public function __construct($data)
     {
         parent::__construct($data);
-        $this->setDimensions($data['dimensions']);
+        $this->setWeight($data["weight"]);
+    }
+
+    public function setWeight(float $weight): void
+    {
+        $this->weight = $weight;
     }
 
 
-    public function saveProduct(\src\Database\DataBase $db): void
+    public function saveProduct(\docker\app\src\Database\DataBase $db): void
     {
-        if (!parent::checkSkuValidity($db)) {
+        if(!parent::checkSkuValidity($db)){
             http_response_code(400);
             echo 'SKU already exists in the database.';
             return;
         }
-        try {
-            $sql = 'INSERT INTO furniture (name, SKU, price, attribute_value) VALUES (:name, :SKU,:price, :attribute_value)';
+        try{
+
+            $sql = 'INSERT INTO books (name, SKU, price, attribute_value) VALUES (:name, :SKU,:price, :weight)';
             $stmt = $db->getPdo()->prepare($sql);
             $stmt->bindValue(':name', parent::getName());
             $stmt->bindValue(':price', parent::getPrice());
             $stmt->bindValue(':SKU', parent::getSku());
-            $stmt->bindValue(':attribute_value', $this->getDimensions());
+            $stmt->bindValue(':weight', $this->getWeight());
             if ($stmt->execute()) {
                 $this->jsonSerialize();
             } else {
                 http_response_code(400);
                 echo 'Unsuccessful post request.';
             }
-        } catch (\Exception $e) {
+        }catch (\Exception $e){
             http_response_code(400);
             echo $e->getMessage();
         }
-
 
     }
 
@@ -59,8 +54,13 @@ class Furniture extends Product
             'name' => parent::getName(),
             'price' => parent::getPrice(),
             'SKU' => parent::getSku(),
-            'width' => $this->getDimensions(),
+            'weight' => $this->weight,
             'product_type' => self::TYPE
         ]);
+    }
+
+    public function getWeight(): float
+    {
+        return $this->weight;
     }
 }

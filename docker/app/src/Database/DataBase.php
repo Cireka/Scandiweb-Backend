@@ -1,5 +1,5 @@
 <?php
-namespace src\Database;
+namespace docker\app\src\Database;
 class DataBase
 {
     private \PDO $pdo;

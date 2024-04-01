@@ -1,24 +1,30 @@
 <?php
 
-namespace src\product;
-class Book extends Product
+namespace docker\app\src\product;
+
+
+class Dvd extends Product
 {
-    private const string TYPE = "book";
-    private float $weight;
+    private const string TYPE = "Dvd";
+    private float $size_mb;
+
+    public function getSizeMb(): float
+    {
+        return $this->size_mb;
+    }
 
     public function __construct($data)
     {
         parent::__construct($data);
-        $this->setWeight($data["weight"]);
+        $this->setSize($data["size_mb"]);
     }
 
-    public function setWeight(float $weight): void
+    public function setSize(float $size): void
     {
-        $this->weight = $weight;
+        $this->size_mb = $size;
     }
 
-
-    public function saveProduct(\src\Database\DataBase $db): void
+    public function saveProduct(\docker\app\src\Database\DataBase $db): void
     {
         if(!parent::checkSkuValidity($db)){
             http_response_code(400);
@@ -26,13 +32,12 @@ class Book extends Product
             return;
         }
         try{
-
-            $sql = 'INSERT INTO books (name, SKU, price, attribute_value) VALUES (:name, :SKU,:price, :weight)';
+            $sql = 'INSERT INTO dvds (name, SKU, price, attribute_value) VALUES (:name, :SKU,:price, :attribute_value)';
             $stmt = $db->getPdo()->prepare($sql);
             $stmt->bindValue(':name', parent::getName());
             $stmt->bindValue(':price', parent::getPrice());
             $stmt->bindValue(':SKU', parent::getSku());
-            $stmt->bindValue(':weight', $this->getWeight());
+            $stmt->bindValue(':attribute_value', $this->getSizeMb());
             if ($stmt->execute()) {
                 $this->jsonSerialize();
             } else {
@@ -53,13 +58,8 @@ class Book extends Product
             'name' => parent::getName(),
             'price' => parent::getPrice(),
             'SKU' => parent::getSku(),
-            'weight' => $this->weight,
+            'size' => $this->size_mb,
             'product_type' => self::TYPE
         ]);
-    }
-
-    public function getWeight(): float
-    {
-        return $this->weight;
     }
 }

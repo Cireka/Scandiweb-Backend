@@ -1,12 +1,12 @@
 <?php
 
-namespace src\product;
+namespace docker\app\src\product;
 
 
 class ProductController
 {
 
-    protected \src\Database\DataBase $connection;
+    protected \docker\app\src\Database\DataBase $connection;
 
     function __construct($db)
     {

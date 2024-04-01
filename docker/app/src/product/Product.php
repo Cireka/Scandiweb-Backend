@@ -1,6 +1,6 @@
 <?php
 
-namespace src\product;
+namespace docker\app\src\product;
 abstract class Product
 {
     protected string $name;
@@ -45,7 +45,7 @@ abstract class Product
         return true; // SKU is valid
     }
 
-    protected abstract function saveProduct(\src\Database\DataBase $db);
+    protected abstract function saveProduct(\docker\app\src\Database\DataBase $db);
     protected abstract function jsonSerialize();
 
 
