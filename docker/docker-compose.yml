@@ -11,3 +11,4 @@ services:
       dockerfile: ./php/Dockerfile
     volumes:
       - ./app:/app
+
