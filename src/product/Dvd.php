@@ -5,7 +5,7 @@ namespace src\product;
 
 class Dvd extends Product
 {
-    private const string TYPE = "Dvd";
+    private const  TYPE = "Dvd";
     private float $size_mb;
 
     public function getSizeMb(): float

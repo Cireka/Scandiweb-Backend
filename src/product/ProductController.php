@@ -20,13 +20,17 @@ class ProductController
         if ($path[1] === "products") {
             $this->getProducts();
         }
+
+
     }
 
     public function handlePost($uri):void
     {
         $data = json_decode(file_get_contents('php://input'), true);
         $type = $data['type'];
-        if ($uri === "/postProduct") {
+        $path = explode('/', $uri);
+
+        if ($path[1] === "postProduct") {
             $this->createProduct($type, $data);
         }
 

@@ -3,7 +3,7 @@
 namespace src\product;
 class Book extends Product
 {
-    private const string TYPE = "book";
+    private const  TYPE = "book";
     private float $weight;
 
     public function __construct($data)

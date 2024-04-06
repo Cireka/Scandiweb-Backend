@@ -4,7 +4,7 @@ namespace src\product;
 
 class Furniture extends Product
 {
-    private const string TYPE = "Furniture";
+    private const  TYPE = "Furniture";
     private string $Dimensions;
 
     public function getDimensions(): string

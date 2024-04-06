@@ -38,11 +38,11 @@ abstract class Product
             $stmt = $db->getPdo()->prepare("SELECT COUNT(*) FROM $table WHERE SKU = :sku");
             $stmt->execute([':sku' => $sku]);
             if ($stmt->fetchColumn() > 0) {
-                return false; // SKU already exists in the database
+                return false;
             }
         }
 
-        return true; // SKU is valid
+        return true;
     }
 
     protected abstract function saveProduct(\src\Database\DataBase $db);
